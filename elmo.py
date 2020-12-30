@@ -1,3 +1,4 @@
+import numpy as np
 
 import tensorflow_hub as hub
 import tensorflow as tf
@@ -63,6 +64,7 @@ def get_words(text):
   return sentences, mask
 
 def get_embeddings(text):
+  global elmo
   sentences, mask = get_words(text)
 
   embeddings = elmo(
@@ -75,15 +77,17 @@ def get_embeddings(text):
     sess.run(tf.compat.v1.global_variables_initializer())
     sess.run(tf.compat.v1.tables_initializer())
     x = sess.run(embeddings)
+  print(x)
   embs = x.reshape(-1, 1024)
   masked_embs = embs[mask]
 
-  return masked_embs
+  return np.array(masked_embs)
 
 
 
 text = 'given strings var0, var1 . if length of var0 not equals to the length of var1 , return "NO". if both var0 and var1 contain at least one character "1" or both of them do not contain "1" at all , return "YES"; else return "NO" .'
 
+init()
 masked_embs = get_embeddings(text)
 
 print('#########################')
@@ -121,12 +125,13 @@ layout = dict(
 fig = go.Figure(data=data, layout=layout)
 fig.show()'''
 
-
+X_train = masked_embs.reshape(1, len(masked_embs), len(masked_embs[0]))
+print(X_train.shape)
 # Basic LSTM 
 encoder = Sequential()
-encoder.add(LSTM(16, input_shape=(1, 1024)))
-encoder.add(Dense(16))
-encoder.add(LSTM(16))
-encoder.add(Dense(1))
-encoder.compile(loss='mean_squared_error', optimizer='adam')
-encoder.fit(x = masked_embs, epochs=100, batch_size=1, verbose=2)
+encoder.add(LSTM(16, input_dim=1024, return_sequences=True))
+encoder.add(Dense(1024))
+encoder.summary()
+# needs decoder here or some kind of values in Y to train !!!!!!!!!!
+encoder.compile(loss='mean_squared_error', optimizer='Adam', metrics=['accuracy'])
+encoder.fit(x = X_train, epochs=10, batch_size=1, verbose=2)
