@@ -18,17 +18,10 @@ import warnings
 warnings.filterwarnings("ignore")
 
 global elmo
-global embeddings
 
 def init():
   global elmo
   elmo = hub.Module("https://tfhub.dev/google/elmo/3", trainable=True)
-
-  global embeddings
-  embeddings = elmo(
-    sentences,
-    signature="default",
-    as_dict=True)["elmo"]
 
 
 def get_words(text):
@@ -72,7 +65,10 @@ def get_words(text):
 def get_embeddings(text):
   sentences, mask = get_words(text)
 
-
+  embeddings = elmo(
+    sentences,
+    signature="default",
+    as_dict=True)["elmo"]
 
 
   with tf.compat.v1.Session() as sess:
