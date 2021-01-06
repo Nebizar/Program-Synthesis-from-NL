@@ -1,4 +1,5 @@
 from naps.pipelines.read_naps import read_naps_dataset
+from tree_transformation import make_the_tree_good
 
 from naps.uast import uast_pprint
 
@@ -15,7 +16,7 @@ def flatten(iterable):
                 break
             iterator = stack.pop()
         elif isinstance(value, str):
-            yield value
+            yield str(value)
         else:
             try:
                 new_iterator = iter(value)
@@ -40,12 +41,12 @@ def get_unique_tokens():
             #print(' '.join(d["text"]))
             #uast_pprint.pprint(d["code_tree"])
             
-            tokens = list(set(list(flatten(d["code_tree"]["funcs"]))))
+            tokens = list(set(list(make_the_tree_good(d["code_tree"]["funcs"]))))
             tokens_total += tokens
 
     tokens_total = list(set(tokens_total))
     print(tokens_total) 
-    print(len(tokens_total)) #1771
+    print(len(tokens_total)) #1762
 
     with open('tokens.txt', 'w') as f:
         for token in tokens_total:
@@ -63,18 +64,38 @@ def generate_output(tokens, unique):
         values[i][index] = 1
     return values
 
+def generate_tokens(output, unique):
+    output = np.array(output)
+    tokens = []
+    for out in output:
+        idx = np.argmax(out)
+        tokens.append(unique[idx])
+    return tokens
+
+def even_embeddings(embed, n):
+    if len(embed) < n:
+        diff =  n - len(embed)
+        embed = np.vstack([embed, np.zeros((diff,len(embed[0])))])
+    return embed
+
 
 
 if __name__ == "__main__":
     #get_unique_tokens()
-    ds, _, _ = read_naps_dataset()
-    with ds:
+    # ds, _, _ = read_naps_dataset()
+    # with ds:
         
-        for d in ds:
-            if "is_partial" in d and d["is_partial"]:
-                continue
-            print(' '.join(d["text"]))
-            #uast_pprint.pprint(d["code_tree"])
-            print(d["code_tree"]["funcs"])
-            break
-    #print(generate_output(['a','b'],['a','b','c','d','e','f']))
+    #     for d in ds:
+    #         if "is_partial" in d and d["is_partial"]:
+    #             continue
+    #         print(' '.join(d["text"]))
+    #         #uast_pprint.pprint(d["code_tree"])
+    #         print(d["code_tree"]["funcs"])
+    #         break
+    # out = generate_output(['a','b'],['a','b','c','d','e','f'])
+    # print(out)
+    # print(generate_tokens(out, ['a','b','c','d','e','f']))
+    embed = np.array([[1,2,3],[1,2,3],[1,2,3],[1,2,3]])
+    embed = even_embeddings(embed, 8)
+    print(embed)
+    

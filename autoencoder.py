@@ -36,7 +36,7 @@ model.add(LSTM(100, activation='relu', input_shape=(masked_embs.shape[1], masked
 #Decoder/Generator
 model.add(RepeatVector(n_out))
 model.add(LSTM(100, activation='relu', return_sequences=True))
-model.add(TimeDistributed(Dense(1774, activation='softmax')))
+model.add(TimeDistributed(Dense(1764, activation='softmax')))
 model.compile(optimizer='adam', loss='mse')
 
 # fit model
