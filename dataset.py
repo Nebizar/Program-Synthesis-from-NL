@@ -48,9 +48,33 @@ def get_unique_tokens():
     print(len(tokens_total)) #1771
 
     with open('tokens.txt', 'w') as f:
-        f.write("%s\n" % len(tokens_total))
         for token in tokens_total:
             f.write("%s\n" % token)
 
+def get_tokens():
+    with open('tokens.txt', 'r') as f:
+        tokens = f.read().splitlines()
+        return tokens
+
+def generate_output(tokens, unique):
+    values = np.zeros((len(tokens), len(unique)))
+    for i in range(len(tokens)):
+        index = unique.index(str(tokens[i]))
+        values[i][index] = 1
+    return values
+
+
+
 if __name__ == "__main__":
-    get_unique_tokens()
+    #get_unique_tokens()
+    ds, _, _ = read_naps_dataset()
+    with ds:
+        
+        for d in ds:
+            if "is_partial" in d and d["is_partial"]:
+                continue
+            print(' '.join(d["text"]))
+            #uast_pprint.pprint(d["code_tree"])
+            print(d["code_tree"]["funcs"])
+            break
+    #print(generate_output(['a','b'],['a','b','c','d','e','f']))

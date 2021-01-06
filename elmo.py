@@ -57,9 +57,9 @@ def get_words(text):
       mask.append(True)
       masked_words.append(word)
 
-  print('#########################')
-  print(words)
-  print('#########################')
+  # print('#########################')
+  # print(words)
+  # print('#########################')
 
   return sentences, mask
 
@@ -77,7 +77,7 @@ def get_embeddings(text):
     sess.run(tf.compat.v1.global_variables_initializer())
     sess.run(tf.compat.v1.tables_initializer())
     x = sess.run(embeddings)
-  print(x)
+  #print(x)
   embs = x.reshape(-1, 1024)
   masked_embs = embs[mask]
 
@@ -85,14 +85,14 @@ def get_embeddings(text):
 
 
 
-text = 'given strings var0, var1 . if length of var0 not equals to the length of var1 , return "NO". if both var0 and var1 contain at least one character "1" or both of them do not contain "1" at all , return "YES"; else return "NO" .'
+# text = 'given strings var0, var1 . if length of var0 not equals to the length of var1 , return "NO". if both var0 and var1 contain at least one character "1" or both of them do not contain "1" at all , return "YES"; else return "NO" .'
 
-init()
-masked_embs = get_embeddings(text)
+# init()
+# masked_embs = get_embeddings(text)
 
-print('#########################')
-print(len(masked_embs))
-print('#########################')
+# print('#########################')
+# print(len(masked_embs))
+# print('#########################')
 
 # PCA EDUCATIONAL - OR MAYBE ?? TO COMPRESS SENTENCES INTO POINTS OF LATENT SPACE ??
 '''pca = PCA(n_components=10)
@@ -125,13 +125,13 @@ layout = dict(
 fig = go.Figure(data=data, layout=layout)
 fig.show()'''
 
-X_train = masked_embs.reshape(1, len(masked_embs), len(masked_embs[0]))
-print(X_train.shape)
-# Basic LSTM 
-encoder = Sequential()
-encoder.add(LSTM(16, input_dim=1024, return_sequences=True))
-encoder.add(Dense(1024))
-encoder.summary()
-# needs decoder here or some kind of values in Y to train !!!!!!!!!!
-encoder.compile(loss='mean_squared_error', optimizer='Adam', metrics=['accuracy'])
-encoder.fit(x = X_train, epochs=10, batch_size=1, verbose=2)
+# X_train = masked_embs.reshape(1, len(masked_embs), len(masked_embs[0]))
+# print(X_train.shape)
+# # Basic LSTM 
+# encoder = Sequential()
+# encoder.add(LSTM(16, input_dim=1024, return_sequences=True))
+# encoder.add(Dense(1024))
+# encoder.summary()
+# # needs decoder here or some kind of values in Y to train !!!!!!!!!!
+# encoder.compile(loss='mean_squared_error', optimizer='Adam', metrics=['accuracy'])
+# encoder.fit(x = X_train, epochs=10, batch_size=1, verbose=2)
