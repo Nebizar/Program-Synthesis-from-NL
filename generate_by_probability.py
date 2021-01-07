@@ -30,6 +30,7 @@ def get_nonflatten_tokens():
 if __name__ == "__main__":
 
     print("Witamy w pliku testowym!")
+
     '''connections = {}
     connections["alfa"] = 4
     connections["beta"] = 5
@@ -37,7 +38,7 @@ if __name__ == "__main__":
         if x == "alfa":
             print(connections[x])'''
 
-
+    # PRZYKŁADOWE DANE (I ICH EWENTUALNE PRZYCIĘCIE):
     a = ["a", "b", "v", "e", "r"]
     b = get_nonflatten_tokens()
 
@@ -49,14 +50,14 @@ if __name__ == "__main__":
     print("\n")
 
 
-
+    # ALGORYTM WŁAŚCIWY
     connections = {}
-    connection_length = 2  # że w sumie 2 wyrazy, czyli patrzymy na jedno wstecz
+    connection_length = 2  # Ile komend w sumie w ciągu, 2 = czyli patrzymy na JEDNO wstecz
 
     for x in range(len(data) - connection_length + 1):
 
-        # Dolicz wystąpienie znalezionego {prefixu}{suffixu} - suffix = ostatnia komenda
-        prefix = "|".join(data[x: x + connection_length - 1])  # Musi być symbol, który nie istnieje w komendach
+        # Dolicz wystąpienie znalezionego {prefixu}{suffixu}, gdzie suffix = ostatnia komenda
+        prefix = "|".join(data[x: x + connection_length - 1])  # "|" - Musi to być symbol, który naturalnie nie istnieje w komendach
         suffix = data[x + connection_length - 1]
 
         if prefix in connections:
@@ -69,7 +70,7 @@ if __name__ == "__main__":
             connections[prefix][suffix] = 1
 
     # Zmiana liczebności na szansę danego suffixu na tle innych suffixów dla danego prefixu
-    for prefix in connections:   # dla danego prefixu
+    for prefix in connections:
         how_many = 0
         for suffix in connections[prefix]:
             how_many+=connections[prefix][suffix]
