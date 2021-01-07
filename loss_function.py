@@ -1,5 +1,12 @@
 from naps.pipelines.read_naps import read_naps_dataset
 from tree_transformation import make_the_tree_good
+from dataset import generate_tokens, get_tokens
+
+global unique
+
+def init_loss():
+    global unique
+    unique = get_tokens()
 
 
 def get_nonflatten_tokens():
@@ -28,6 +35,10 @@ def get_nonflatten_tokens():
 
 
 def loss_function(list_1, list_2):  # Funkcja straty - poprawność list_2 na bazie połączeń list_1
+    global unique
+    
+    list_1 = generate_tokens(list_1, unique)
+    list_2 = generate_tokens(list_2, unique)
     data = list_1
 
 

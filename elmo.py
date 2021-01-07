@@ -5,15 +5,15 @@ import tensorflow as tf
 
 import re
 
-from sklearn.decomposition import PCA
-from sklearn.manifold import TSNE
+# from sklearn.decomposition import PCA
+# from sklearn.manifold import TSNE
 
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import LSTM
+# from keras.models import Sequential
+# from keras.layers import Dense
+# from keras.layers import LSTM
 
-import plotly as py
-import plotly.graph_objs as go
+# import plotly as py
+# import plotly.graph_objs as go
 
 import warnings
 warnings.filterwarnings("ignore")

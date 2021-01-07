@@ -78,6 +78,12 @@ def even_embeddings(embed, n):
         embed = np.vstack([embed, np.zeros((diff,len(embed[0])))])
     return embed
 
+def even_tokens(tokens, n):
+    if len(tokens) < n:
+        diff =  n - len(tokens)
+        tokens = np.concatenate((tokens, np.full(diff, '')))
+    return tokens
+
 
 
 if __name__ == "__main__":
@@ -95,7 +101,8 @@ if __name__ == "__main__":
     # out = generate_output(['a','b'],['a','b','c','d','e','f'])
     # print(out)
     # print(generate_tokens(out, ['a','b','c','d','e','f']))
-    embed = np.array([[1,2,3],[1,2,3],[1,2,3],[1,2,3]])
-    embed = even_embeddings(embed, 8)
-    print(embed)
+    # embed = np.array([[1,2,3],[1,2,3],[1,2,3],[1,2,3]])
+    # embed = even_embeddings(embed, 8)
+    # print(embed)
+    print(even_tokens(['a','b','c','d','e','f'], 12))
     
