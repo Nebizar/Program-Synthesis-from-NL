@@ -36,7 +36,10 @@ def get_nonflatten_tokens():
 
 def loss_function(list_1, list_2):  # Funkcja straty - poprawność list_2 na bazie połączeń list_1
     global unique
-    
+    print('#################################')
+    print(list_1)
+    print(list_2)
+    print('#################################')
     list_1 = generate_tokens(list_1, unique)
     list_2 = generate_tokens(list_2, unique)
     data = list_1

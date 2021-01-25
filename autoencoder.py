@@ -135,6 +135,7 @@ def train_model():
     # fit model
     model.fit(X_train, Y_train, epochs=10, verbose=0)
     print(model.get_weights())
+    print(model.summary())
 
 # x, y, x2, y2 = prepare_train_data()
 # print(x.shape)
